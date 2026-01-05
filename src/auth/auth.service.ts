@@ -16,10 +16,10 @@ export class AuthService {
       throw new UnauthorizedException('用户名或密码错误');
     }
 
-    const payload = { sub: user._id, username: user.username };
+    const { password: pwd, ...userInfo } = user.toObject();
 
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      token: await this.jwtService.signAsync(userInfo),
     };
   }
 }
