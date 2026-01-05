@@ -6,6 +6,7 @@ import {
   Delete,
   Patch,
   Body,
+  Query,
 } from '@nestjs/common';
 import { QuestionService } from './question.service';
 import { QuestionDto } from './dto/question.dto';
@@ -38,5 +39,25 @@ export class QuestionController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.questionService.findOne(id);
+  }
+
+  @Get()
+  async findAll(
+    @Query('keyword') keyword: string,
+    @Query('page') page: number,
+    @Query('pageSize') pageSize: number,
+  ) {
+    const list = await this.questionService.findAllList({
+      keyword,
+      page,
+      pageSize,
+    });
+
+    const count = await this.questionService.findAllCount({ keyword });
+
+    return {
+      list,
+      count,
+    };
   }
 }

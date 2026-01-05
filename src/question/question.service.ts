@@ -25,4 +25,26 @@ export class QuestionService {
   async findOne(id: string) {
     return await this.questionModel.findById(id);
   }
+
+  async findAllList({ keyword = '', page = 1, pageSize = 10 }) {
+    const whereOpt = {};
+    if (keyword) {
+      const reg = new RegExp(keyword, 'i');
+      whereOpt['title'] = { $regex: reg }; //模糊搜索
+    }
+    return await this.questionModel
+      .find(whereOpt)
+      .sort({ _id: -1 })
+      .skip((page - 1) * pageSize)
+      .limit(pageSize);
+  }
+
+  async findAllCount({ keyword = '' }) {
+    const whereOpt = {};
+    if (keyword) {
+      const reg = new RegExp(keyword, 'i');
+      whereOpt['title'] = { $regex: reg }; //模糊搜索
+    }
+    return await this.questionModel.countDocuments(whereOpt);
+  }
 }
