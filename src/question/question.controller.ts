@@ -1,5 +1,14 @@
-import { Controller, Get, Post, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Param,
+  Delete,
+  Patch,
+  Body,
+} from '@nestjs/common';
 import { QuestionService } from './question.service';
+import { QuestionDto } from './dto/question.dto';
 
 @Controller('question')
 export class QuestionController {
@@ -14,6 +23,16 @@ export class QuestionController {
   @Post()
   async create() {
     return await this.questionService.create();
+  }
+
+  @Delete(':id')
+  async deleteOne(@Param('id') id: string) {
+    return await this.questionService.deleteOne(id);
+  }
+
+  @Patch(':id')
+  async updateOne(@Param('id') id: string, @Body() questionDto: QuestionDto) {
+    return await this.questionService.update(id, questionDto);
   }
 
   @Get(':id')
