@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { QuestionService } from './question.service';
 import { QuestionDto } from './dto/question.dto';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @Controller('question')
 export class QuestionController {
@@ -51,6 +52,7 @@ export class QuestionController {
     return await this.questionService.update(id, questionDto, username);
   }
 
+  @Public()
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.questionService.findOne(id);
