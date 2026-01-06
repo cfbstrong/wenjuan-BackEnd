@@ -5,9 +5,15 @@ import { HttpExceptionFilter } from './http-exception/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
   app.setGlobalPrefix('api');
+
   app.useGlobalInterceptors(new TransformInterceptor());
+
   app.useGlobalFilters(new HttpExceptionFilter());
+
+  app.enableCors(); //跨域
+
   await app.listen(process.env.PORT ?? 3005); //修改端口号
 }
 bootstrap();
