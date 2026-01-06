@@ -29,7 +29,7 @@ export class Question {
   @Prop({ required: true })
   author: string;
 
-  @Prop({ required: true })
+  @Prop()
   componentList: {
     fe_id: string; //组件fe_id需要前端生成
     type: string; //组件类型

@@ -7,6 +7,7 @@ import {
   Patch,
   Body,
   Query,
+  Request,
 } from '@nestjs/common';
 import { QuestionService } from './question.service';
 import { QuestionDto } from './dto/question.dto';
@@ -46,14 +47,27 @@ export class QuestionController {
     @Query('keyword') keyword: string,
     @Query('page') page: number,
     @Query('pageSize') pageSize: number,
+    @Query('isDeleted') isDeleted: boolean = false,
+    @Query('isStar') isStar: boolean = false,
+    @Request() req,
   ) {
+    const { username } = req.user;
+
     const list = await this.questionService.findAllList({
       keyword,
       page,
       pageSize,
+      isDeleted,
+      isStar,
+      author: username,
     });
 
-    const count = await this.questionService.findAllCount({ keyword });
+    const count = await this.questionService.findAllCount({
+      keyword,
+      isDeleted,
+      isStar,
+      author: username,
+    });
 
     return {
       list,

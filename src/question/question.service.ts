@@ -26,8 +26,21 @@ export class QuestionService {
     return await this.questionModel.findById(id);
   }
 
-  async findAllList({ keyword = '', page = 1, pageSize = 10 }) {
-    const whereOpt = {};
+  async findAllList({
+    keyword = '',
+    page = 1,
+    pageSize = 10,
+    isDeleted = false,
+    isStar,
+    author = '',
+  }) {
+    const whereOpt = {
+      isDeleted,
+      author,
+    };
+    if (isStar != null) {
+      whereOpt['isStar'] = isStar;
+    }
     if (keyword) {
       const reg = new RegExp(keyword, 'i');
       whereOpt['title'] = { $regex: reg }; //模糊搜索
@@ -39,8 +52,14 @@ export class QuestionService {
       .limit(pageSize);
   }
 
-  async findAllCount({ keyword = '' }) {
-    const whereOpt = {};
+  async findAllCount({ keyword = '', isDeleted = false, isStar, author = '' }) {
+    const whereOpt = {
+      isDeleted,
+      author,
+    };
+    if (isStar != null) {
+      whereOpt['isStar'] = isStar;
+    }
     if (keyword) {
       const reg = new RegExp(keyword, 'i');
       whereOpt['title'] = { $regex: reg }; //模糊搜索
