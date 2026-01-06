@@ -27,12 +27,14 @@ export class QuestionService {
     return await question.save();
   }
 
-  async deleteOne(id: string) {
-    return await this.questionModel.findByIdAndDelete(id);
+  async deleteOne(id: string, author: string) {
+    // return await this.questionModel.findByIdAndDelete(id);
+    const res = await this.questionModel.findOneAndDelete({ _id: id, author });
+    return res;
   }
 
-  async update(id: string, updateData) {
-    return await this.questionModel.updateOne({ _id: id }, updateData);
+  async update(id: string, updateData, author: string) {
+    return await this.questionModel.updateOne({ _id: id, author }, updateData);
   }
 
   async findOne(id: string) {

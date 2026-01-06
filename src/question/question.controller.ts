@@ -29,13 +29,19 @@ export class QuestionController {
   }
 
   @Delete(':id')
-  async deleteOne(@Param('id') id: string) {
-    return await this.questionService.deleteOne(id);
+  async deleteOne(@Param('id') id: string, @Request() req) {
+    const { username } = req.user;
+    return await this.questionService.deleteOne(id, username);
   }
 
   @Patch(':id')
-  async updateOne(@Param('id') id: string, @Body() questionDto: QuestionDto) {
-    return await this.questionService.update(id, questionDto);
+  async updateOne(
+    @Param('id') id: string,
+    @Body() questionDto: QuestionDto,
+    @Request() req,
+  ) {
+    const { username } = req.user;
+    return await this.questionService.update(id, questionDto, username);
   }
 
   @Get(':id')
