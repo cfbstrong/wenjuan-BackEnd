@@ -88,4 +88,10 @@ export class QuestionController {
       count,
     };
   }
+
+  @Post('duplicate/:id')
+  async duplicate(@Param('id') id: string, @Request() req) {
+    const { username } = req.user;
+    return await this.questionService.duplicate(id, username);
+  }
 }
