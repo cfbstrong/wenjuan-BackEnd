@@ -1,15 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Question } from './schemas/question.schema';
+import { nanoid } from 'nanoid';
 
 @Injectable()
 export class QuestionService {
   constructor(@InjectModel(Question.name) private questionModel) {}
 
-  async create() {
+  async create(author: string) {
     const question = new this.questionModel({
-      title: 'What is the capital of France?' + Math.random(),
-      description: 'This is a question about geography',
+      title: '问卷标题' + Date.now(),
+      description: '问卷描述',
+      author,
+      componentList: [
+        {
+          fe_id: nanoid(),
+          type: 'questionInfo',
+          title: '问卷信息',
+          props: {
+            title: '问卷标题',
+            description: '问卷描述',
+          },
+        },
+      ],
     });
     return await question.save();
   }

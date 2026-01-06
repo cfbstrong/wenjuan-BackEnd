@@ -23,8 +23,9 @@ export class QuestionController {
   // }
 
   @Post()
-  async create() {
-    return await this.questionService.create();
+  async create(@Request() req) {
+    const { username } = req.user;
+    return await this.questionService.create(username);
   }
 
   @Delete(':id')
