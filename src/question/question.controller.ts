@@ -34,6 +34,13 @@ export class QuestionController {
     return await this.questionService.deleteOne(id, username);
   }
 
+  @Delete()
+  async deleteMany(@Body() body, @Request() req) {
+    const { username } = req.user;
+    const { ids = [] } = body;
+    return await this.questionService.deleteMany(ids, username);
+  }
+
   @Patch(':id')
   async updateOne(
     @Param('id') id: string,
