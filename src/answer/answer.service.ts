@@ -13,4 +13,23 @@ export class AnswerService {
     const newAnswer = new this.answerModel(answerInfo);
     return await newAnswer.save();
   }
+
+  async count(questionId: string) {
+    if (!questionId) {
+      return 0;
+    }
+    return await this.answerModel.count({ questionId });
+  }
+
+  async findAll(questionId: string, opt: { page: number; pageSize: number }) {
+    if (!questionId) {
+      return [];
+    }
+    const { page = 1, pageSize = 10 } = opt;
+    return await this.answerModel
+      .find({ questionId })
+      .skip((page - 1) * pageSize)
+      .limit(pageSize)
+      .sort({ createdAt: -1 });
+  }
 }
